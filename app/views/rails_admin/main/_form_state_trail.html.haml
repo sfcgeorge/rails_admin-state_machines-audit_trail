@@ -1,0 +1,17 @@
+-# = form.send field.view_helper, field.method_name, field._html_attributes
+- transitions = form.object.send(field.association)
+- transitions = transitions.order(created_at: :desc)
+- transitions = transitions.limit(field.limit) if field.limit
+
+%table.table.table-condensed
+  %tr
+    %th Event
+    %th From state
+    %th To state
+    %th Ocurred at
+  - transitions.each_with_index do |t, i|
+    %tr
+      %th= t.event
+      %td= t.from
+      %td{ class: ("success" if i.zero?) }= t.to
+      %td= t.created_at
