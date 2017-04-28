@@ -3,7 +3,15 @@ module RailsAdmin::Config::Fields::Types
     RailsAdmin::Config::Fields::Types.register(:state_trail, self)
 
     register_instance_option :allowed_methods do
-      [method_name, limit, association]
+      [method_name, limit, association, context]
+    end
+
+    register_instance_option(:context) do
+      []
+    end
+
+    register_instance_option(:limit) do
+      nil
     end
 
     register_instance_option(:partial) do
@@ -11,11 +19,7 @@ module RailsAdmin::Config::Fields::Types
     end
 
     register_instance_option(:association) do
-      "#{bindings[:object].class.to_s.underscore}_#{method_name}_transitions"
-    end
-
-    register_instance_option(:limit) do
-      nil
+      "#{class_underscore}_#{method_name}_transitions"
     end
 
     register_instance_option(:formatted_value) do
@@ -28,6 +32,12 @@ module RailsAdmin::Config::Fields::Types
       else
         value
       end
+    end
+
+    private
+
+    def class_underscore
+      bindings[:object].class.to_s.underscore.split("/").last
     end
   end
 end

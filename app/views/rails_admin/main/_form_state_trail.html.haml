@@ -6,12 +6,15 @@
 %table.table.table-condensed
   %tr
     %th Event
-    %th From state
     %th To state
+    - field.context.each do |context|
+      %th= context.to_s.humanize
     %th Ocurred at
   - transitions.each_with_index do |t, i|
     %tr
       %th= t.event
-      %td= t.from
-      %td{ class: ("success" if i.zero?) }= t.to
+      %td{ class: ("info" if i.zero?) }= t.to
+      - field.context.each do |context|
+        %td
+          %div{ style: "white-space: normal; max-height: 38px; overflow-y: scroll" }= t.send(context)
       %td= t.created_at
